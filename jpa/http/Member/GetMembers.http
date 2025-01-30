@@ -1,2 +1,2 @@
 ### GET Member
-GET http://localhost:8080/api/members
+GET http://localhost:8080/api/member/members

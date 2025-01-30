@@ -17,7 +17,7 @@ import com.example.jpa.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -28,12 +28,12 @@ public class MemberController {
 		return ResponseEntity.ok(memberService.getMembers());
 	}
 
-	@GetMapping("/member/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<MemberResponse> getMemberById(@PathVariable Long id) {
 		return ResponseEntity.ok(memberService.getMemberById(id));
 	}
 
-	@PostMapping("/member")
+	@PostMapping
 	public ResponseEntity<MemberResponse> addMember(@RequestBody AddMemberRequest addMemberRequest) {
 		return ResponseEntity.ok(memberService.cratedMember(addMemberRequest));
 	}

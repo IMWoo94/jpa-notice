@@ -1,0 +1,4 @@
+@id=1
+
+### GET TeamById
+GET http://localhost:8080/api/team/{{id}}
