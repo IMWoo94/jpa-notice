@@ -2,6 +2,7 @@ package com.example.jpa.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.jpa.dto.request.AddMemberRequest;
 import com.example.jpa.dto.response.MemberResponse;
 import com.example.jpa.entity.Member;
+import com.example.jpa.entity.Team;
 import com.example.jpa.exception.NotFoundMember;
 import com.example.jpa.repositroy.MemberRepository;
+import com.example.jpa.repositroy.TeamRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberService {
 
 	private final MemberRepository memberRepository;
+	private final TeamRepository teamRepository;
 
 	@Transactional(readOnly = true)
 	public List<MemberResponse> getMembers() {
@@ -31,8 +35,7 @@ public class MemberService {
 			memberResponseList.add(MemberResponse.builder()
 				.id(member.getId())
 				.name(member.getName())
-				.build()
-			);
+				.build());
 		});
 		return memberResponseList;
 	}
@@ -52,11 +55,22 @@ public class MemberService {
 	@Transactional
 	public MemberResponse cratedMember(AddMemberRequest addMemberRequest) {
 		log.info("cratedMember method called");
-		Member member = memberRepository.save(addMemberRequest.toEntity());
+		Member save;
+		Optional<Team> team = teamRepository.findById(addMemberRequest.getTeamId());
+		if (team.isPresent()) {
+			Member addMember = Member.builder()
+				.name(addMemberRequest.getName())
+				.team(team.get())
+				.build();
+
+			save = memberRepository.save(addMember);
+		} else {
+			save = memberRepository.save(addMemberRequest.toEntity());
+		}
 
 		return MemberResponse.builder()
-			.id(member.getId())
-			.name(member.getName())
+			.id(save.getId())
+			.name(save.getName())
 			.build();
 	}
 

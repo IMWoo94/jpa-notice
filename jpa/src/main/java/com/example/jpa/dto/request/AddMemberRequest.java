@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class AddMemberRequest {
 	public String name;
+	public Long teamId;
 
 	public Member toEntity() {
 		return Member.builder()

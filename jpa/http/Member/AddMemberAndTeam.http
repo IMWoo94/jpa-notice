@@ -1,0 +1,8 @@
+### POST addMember
+POST http://localhost:8080/api/member
+Content-Type: application/json
+
+{
+  "name": "test",
+  "teamId": 1
+}

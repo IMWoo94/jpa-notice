@@ -6,5 +6,4 @@ import lombok.Builder;
 public class TeamResponse {
 	public Long id;
 	public String name;
-
 }
